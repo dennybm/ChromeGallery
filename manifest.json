@@ -1,17 +1,23 @@
 {
-    "manifest_version": 2,
-    "name": "My Chrome Extension",
+    "name": "ChromeGallery", 
+    "description": "Sample Chrome Extension", 
     "version": "1.0",
-    "description": "Description of your extension",
-    "permissions": ["activeTab", "debugger", "storage", "contextMenus"],
+    "manifest_version": 3, 
     "background": {
         "service_worker": "background.js"
-      },
-    "browser_action": {
+    },
+    "permissions": ["storage", "activeTab", "contextMenus"],
+    "action": {
+        "default_popup": "popup.html",
         "default_icon": "icon16.png"
-    },
+    }, 
+    "content_scripts": [
+        {
+            "matches": ["https://*.google.com/*"],
+            "js": ["content.js"]
+        }
+    ],
     "icons": {
-      "16": "icon16.png"
-    },
-    "host_permissions": ["<all_urls>"]
-  }
+        "16": "icon16.png"
+      }
+}
