@@ -29,6 +29,4 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
             });
         }
     })
-    
-
 })

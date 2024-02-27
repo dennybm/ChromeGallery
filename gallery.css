@@ -1,0 +1,10 @@
+#savedUrls {
+    min-width: 80vw;
+    min-height: 80vh;
+}
+
+#savedUrls img {
+    max-width: 18vw;
+    position: relative;
+    margin: 5px;
+}
