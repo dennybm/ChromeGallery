@@ -14,26 +14,21 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
 
     let images = [];
 
-    chrome.storage.local.get(["gallery"]).then((result) => {
-        images = result;
-      });
+    // get current array of images
+    chrome.storage.local.get("imageUrl", function(data) {
+        if (data.imageUrl) {
+            console.log("got img urls " + data.imageUrl);
+            images = data.imageUrl;
 
-    images.push(info.srcUrl);
+            // push new img to array of images
+            images.push(info.srcUrl );
 
-    chrome.storage.local.set({ gallery: 'images' }).then(() => {
-        console.log("Value is set");
-
-        chrome.storage.session.get(['gallery']).then((result) => {
-            console.log("Value retrieved: " + result.gallery);
-        });
-
-      });
-
-    chrome.storage.session.get(["gallery"]).then((result) => {
-        console.log("Value retrieved: " + result.gallery);
-    });
-
-    images.forEach(image => {
-        chrome.tabs.create({ url: image });
+            // store now array of images.
+            chrome.storage.local.set({ imageUrl: images }, function() {
+                console.log("Image URL saved:", images);
+            });
+        }
     })
+    
+
 })
