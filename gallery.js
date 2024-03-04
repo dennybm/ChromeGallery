@@ -8,18 +8,34 @@ chrome.storage.local.get("imageUrl", function(data) {
     if (data.imageUrl) {
       var container = document.getElementById("savedUrls");
       
+      var i = 0;
+
       data.imageUrl.forEach((image) => {
-        console.log('creating image for ' + image);
+          var imageContainer = document.createElement("div");
           var item = document.createElement("img");
           item.src = image;
-          container.appendChild(item);
-          item.addEventListener('mousedown', function(e) {
-            isDown = true;
-            draggingItem = item;
+          imageContainer.appendChild(item);
+          container.appendChild(imageContainer);
+          var column = i % 4;
+          var row = Math.floor(i / 4);
+          imageContainer.style.gridRow = row;
+          imageContainer.style.gridColumn = column;
+          i++;
 
-            if (item.style.left){
-                var left = parseInt(item.style.left, 10); 
-                var top = parseInt(item.style.top, 10); 
+          item.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            const delta = -event.deltaY / 4;
+            item.style.width = `${item.offsetWidth + delta}px`;
+            item.style.height = `${item.offsetHeight + delta}px`;
+          });
+
+          imageContainer.addEventListener('mousedown', function(e) {
+            isDown = true;
+            draggingItem = imageContainer;
+
+            if (imageContainer.style.left){
+                var left = parseInt(imageContainer.style.left, 10); 
+                var top = parseInt(imageContainer.style.top, 10); 
             }
             else{
                 var left = 0;
@@ -31,8 +47,31 @@ chrome.storage.local.get("imageUrl", function(data) {
                 top - e.clientY
             ];
 
-            console.log(item.getBoundingClientRect().left);
         }, true);
+
+        var trashCan = document.createElement("img");
+        trashCan.src = "trash-can.png";
+        trashCan.className = "trash-can"
+
+        imageContainer.appendChild(trashCan);
+
+        imageContainer.addEventListener("mouseover", () => {
+            trashCan.style.display = "inline";
+        });
+
+        imageContainer.addEventListener("mouseout", () => {
+            trashCan.style.display = "none";
+        });
+
+        trashCan.addEventListener("click", () => {
+            imageContainer.parentNode.removeChild(imageContainer);
+            var newImageUrls = data.imageUrl;
+            newImageUrls.splice(data.imageUrl.indexOf(image), 1);
+
+            // store now array of images.
+            chrome.storage.local.set({ imageUrl: newImageUrls }, function() {
+            });
+        });
       })
     }
   });

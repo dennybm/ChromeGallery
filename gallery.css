@@ -1,10 +1,46 @@
 #savedUrls {
-    min-width: 80vw;
+    display: grid;
+    max-width: 80vw;
+    max-height: 80vh;
     min-height: 80vh;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+#savedUrls::before {
+    content: "";
+    display: none;
+    /* Adjust size and margin to match hidden image*/
+    width: 300px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    margin: 0 10px; /* Adjust margins as needed */
 }
 
 #savedUrls img {
-    max-width: 18vw;
+    width: 18vw;
     position: relative;
     margin: 5px;
+    flex-grow: 0;
+}
+
+#savedUrls img:hover {
+    border: 1px solid blue;
+}
+
+#savedUrls div {
+    position: relative;
+    align-self: start;  
+    flex-grow: 0;
+}
+
+.trash-can {
+    position: absolute;
+    max-width: 15px;
+    max-height: 15px;
+    vertical-align: top;
+    right: 35px;
+    cursor: pointer;
+    background-color: white;
+    display: none;
+    flex-grow: 0;
 }

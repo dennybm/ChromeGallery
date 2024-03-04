@@ -23,7 +23,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
             // push new img to array of images
             images.push(info.srcUrl );
 
-            // store now array of images.
+            // store new array of images.
             chrome.storage.local.set({ imageUrl: images }, function() {
                 console.log("Image URL saved:", images);
             });
